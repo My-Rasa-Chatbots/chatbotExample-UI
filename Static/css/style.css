@@ -7,10 +7,11 @@ body {
 /* ============= css related to chats =============== */
 
 .widget {
+  z-index: 100;
   display: none;
   width: 350px;
   right: 15px;
-  height: 550px;
+  height: 530px;
   bottom: 7vw;
   right: 8vw;
   position: fixed;
@@ -31,13 +32,18 @@ body {
   color: white;
   float: left;
   margin-top: 3%;
-  margin-left: 5%;
+  margin-left: 0%;
+  font-size: 25px;
+  font-weight: 600;
 }
 .titleProfile{
-  height: 35px;
-  width: 35px;
+  height: 40px;
+  width: 40px;
+  padding: 2px;
   float: left;
-  margin: 10px;
+  border-radius: 50%;
+  background: #fff;
+  margin: 5px 5px 5px 15px;
 }
 .chats {
   /* display: none; */
@@ -184,7 +190,7 @@ blockquote {
   bottom: 0px;
   width: 100%;
   padding: 5px;
-  border-radius: 10px 10px 10px 10px;
+  border-radius: 0px 0px 10px 10px;
   border: 2px solid #0050db;
 }
 
@@ -340,14 +346,84 @@ input:focus {
 
 /* Bot pop-up intro */
 
-.tap-target {
+.show-prompt {
+  visibility: hidden;
+  opacity: 0;
   color: #fff;
   background: #060dcfc7;
-
+  cursor: pointer;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 300px;
+  height: 300px;
+  border-top-left-radius: 300px;
+  padding: 20px;
+  transition: visibility 0.5s, opacity 0.3s linear;
 }
-
-
-.tap-target-wave > .profile_div{
-  z-index: -10;
+.show-prompt:hover{
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0.5s, opacity 0.3s linear;
+}
+.show-prompt-content{
+  margin-top: 28%;
+  margin-left: 30%;
+}
+.show-prompt > .profile-white-bg{
+  position: fixed;
+  background: #fff;
+  right: -20px;
+  bottom: -20px;
+  background: #fff;
+  height: 120px;
+  width: 120px;
+  border-top-left-radius: 120px;
+  cursor: pointer;
+  animation-name: white_bg_animate;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}
+/* The animation code */
+@keyframes white_bg_animate {
+  0% {
+    transform: scale(1.2,1.2);
+  }
+  50% {
+    transform: scale(1,1);
+  }
+  100% {
+    transform: scale(1.2,1.2);
+  }
+}
+/* Use a media query to add a breakpoint at 800px: */
+@media screen and (min-width: 1000px) {
+  .show-prompt{
+    width: 500px;
+    height: 500px;
+    border-top-left-radius: 500px;
+  }
+  .show-prompt > .profile-white-bg{
+    height: 240px;
+    width: 240px;
+    border-top-left-radius: 220px;
+  }
+}
+@media screen and (min-width: 600px) and (max-width: 1000px){
+  .show-prompt{
+    width: 400px;
+    height: 400px;
+    border-top-left-radius: 400px;
+  }
+  .show-prompt > .profile-white-bg{
+    height: 170px;
+    width: 170px;
+    border-top-left-radius: 170px;
+  }
+}
+div .open{
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0.5s, opacity 0.3s linear;
 }
 

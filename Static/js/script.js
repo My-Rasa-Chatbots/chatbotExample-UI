@@ -12,13 +12,11 @@ function include(file) {
 
 // Bot pop-up intro
 document.addEventListener("DOMContentLoaded", () => {
-  const elemsTap = document.querySelector(".tap-target");
   // eslint-disable-next-line no-undef
-  const instancesTap = M.TapTarget.init(elemsTap, { onclose: (() => { console.log("Hi") }) });
-  instancesTap.open();
+  $(".show-prompt").addClass("open")
   setTimeout(() => {
-    instancesTap.close();
-  }, 7000);
+    $(".show-prompt").removeClass("open")
+  }, 4000);
 });
 
 /* import components */
@@ -27,8 +25,6 @@ include('./static/js/components/index.js');
 window.addEventListener('load', () => {
   // initialization
   $(document).ready(() => {
-    // Bot pop-up intro
-    $("div").removeClass("tap-target-origin");
 
     // drop down menu for close, restart conversation & clear the chats.
     $(".dropdown-trigger").dropdown();
@@ -46,7 +42,7 @@ window.addEventListener('load', () => {
   });
   // Toggle the chatbot screen
   $("#profile_div").click(() => {
-    // $(".profile_div").toggle();
+    $(".show-prompt").removeClass("open");
     $(".widget").toggle();
   });
 
@@ -66,6 +62,13 @@ window.addEventListener('load', () => {
   });
 
   // If nothing in chat show welcome message
-  
-
 });
+
+$(document).mouseup(function (e) {
+  var container = $(".show-prompt");
+  // if the target of the click isn't the container nor a descendant of the container
+  if (!container.is(e.target) && container.has(e.target).length === 0) {
+    $(".show-prompt").removeClass("open")
+  }
+});
+
