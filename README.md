@@ -1,3 +1,3 @@
 # mChat-UI
-Its mChat front end code.
+MChat UI 
 It will connect to Rasa Server.
