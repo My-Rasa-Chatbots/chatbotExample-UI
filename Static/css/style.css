@@ -262,20 +262,105 @@ blockquote {
 
 .imgcard {
   object-fit: cover;
-  width: 80%;
-  height: 50%;
+  width: 70%;
+  height: 45%;
   border-radius: 10px;
-  margin-left: 1%;
+  margin-left: 2em;
 }
 
 /* css for markdown images */
 
 .imgcard_mrkdwn {
-  width: 80%;
+  width: 70%;
   border-radius: 10px;
   margin-left: 1%;
 }
 
+/* css for suggestions buttons */
+
+/* .suggestions {
+  padding: 5px;
+  max-width: 80%;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 2px 5px 5px 1px #dbdade;
+} */
+
+.menuTitle {
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.menu {
+  float: left;
+  margin-left: 1.5em;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 70%;
+  column-gap: 10px;
+  row-gap: 5px;
+  /* margin-top: -5px; */
+}
+
+.menuChips {
+  display: block;
+  /* background: #060dcfc7; */
+  color: #060dcfc7;
+  text-align: center;
+  padding: 5px 13px;
+  cursor: pointer;
+  font-size: 13px;
+  border-radius: 1em;
+  border: 1px solid #060dcfc7;
+  font-weight: 600;
+  word-wrap: break-word;
+}
+.menuChips:hover{
+  background: #060dcfc7;
+  color: white;
+}
+
+/* css for collapsible */
+
+.collapsible {
+  margin-top: 5px;
+  margin-left: 5%;
+  max-width: 60%;
+  min-width: 25%;
+  font-size: 13px;
+  word-wrap: break-word;
+  border-radius: 20px;
+  background: white;
+}
+
+.collapsible-body {
+  padding: 15px;
+}
+
+.collapsible-header {
+  font-weight: bold;
+  color: #060dcfc7;
+}
+
+ul.collapsible > li:first-child .collapsible-header {
+  border-radius: 20px 20px 0px 0px;
+}
+
+ul.collapsible > li:last-child .collapsible-header {
+  color: #060dcfc7;
+  border-radius: 0px 0px 20px 20px;
+}
+
+ul.collapsible > li:last-child .collapsible-body {
+  border-bottom: none;
+}
+
+.collapsible-header {
+  padding: 10px;
+}
 
 /* css for botTyping */
 

@@ -9,8 +9,9 @@ function include(file) {
 
 /* include all the components js file */
 
-include('./static/js/constants.js');
+
 include('./static/js/components/chat.js');
 include('./static/js/components/botTyping.js');
 include('./static/js/components/suggestionButtons.js');
-
+include('./static/js/components/collapsible.js')
+include('./static/js/components/cardsCarousel.js')

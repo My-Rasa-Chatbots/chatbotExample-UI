@@ -1,7 +1,7 @@
 /**
  * Convert JS Markdown to HTML
  */
- const converter = new showdown.Converter();
+const converter = new showdown.Converter();
 
 /**
  * scroll to the bottom of the chats after new message has been added to chat
@@ -17,13 +17,16 @@ function scrollToBottomOfResults() {
  * @param {String} message user message
  */
 function setUserResponse(message) {
+    setTimeout(() => {
     const user_response = `<img class="userAvatar" src='${userAvatar_img_src}'><p class="userMsg">${message} </p><div class="clearfix"></div>`;
     $(user_response).appendTo(".chats").show("slow");
 
     $(".usrInput").val("");
     scrollToBottomOfResults();
     showBotTyping();
-    $(".suggestions").remove();
+    // $(".suggestions").remove();
+    },1);
+    scrollToBottomOfResults();
 }
 
 
@@ -33,6 +36,7 @@ function setUserResponse(message) {
  *
  */
 function getBotResponse(text) {
+    $("#initial_welcome_info").hide();
     botResponse = `<img class="botAvatar" src="${botAvatar_img_src}"/><span class="botMsg">${text}</span><div class="clearfix"></div>`;
     return botResponse;
 }
@@ -59,6 +63,7 @@ function setBotResponse(response) {
             scrollToBottomOfResults();
         } else {
             // if we get response from Rasa
+            // console.log("Responsess:: "+response[1].text)
             for (let i = 0; i < response.length; i += 1) {
                 // check if the response contains "text"
                 if (Object.hasOwnProperty.call(response[i], "text")) {
@@ -68,7 +73,7 @@ function setBotResponse(response) {
                         let html = converter.makeHtml(response[i].text);
                         html = html.replaceAll("<p>", "").replaceAll("</p>", "").replaceAll("<strong>", "<b>").replaceAll("</strong>", "</b>");
                         html = html.replace(/(?:\r\n|\r|\n)/g, '<br>')
-                        console.log(html);
+                        // console.log("html: "+html);
                         // check for blockquotes
                         if (html.includes("<blockquote>")) {
                             html = html.replaceAll("<br>", "");
@@ -105,7 +110,6 @@ function setBotResponse(response) {
                 if (Object.hasOwnProperty.call(response[i], "image")) {
                     if (response[i].image !== null) {
                         const BotResponse = `<div class="singleCard"><img class="imgcard" src="${response[i].image}"></div><div class="clearfix">`;
-
                         $(BotResponse).appendTo(".chats").hide().fadeIn(1000);
                     }
                 }
@@ -113,14 +117,122 @@ function setBotResponse(response) {
                 // check if the response contains "buttons"
                 if (Object.hasOwnProperty.call(response[i], "buttons")) {
                     if (response[i].buttons.length > 0) {
+                        // console.log("tp:"+response[i].buttons)
                         addSuggestion(response[i].buttons);
                     }
                 }
+
+                // check if the response contains "attachment"
+                if (Object.hasOwnProperty.call(response[i], "attachment")) {
+                    if (response[i].attachment != null) {
+                        if (response[i].attachment.type === "video") {
+                            // check if the attachment type is "video"
+                            const video_url = response[i].attachment.payload.src;
+
+                            const BotResponse = `<div class="video-container"> <iframe src="${video_url}" frameborder="0" allowfullscreen></iframe> </div>`;
+                            $(BotResponse).appendTo(".chats").hide().fadeIn(1000);
+                        }
+                    }
+                }
+                // check if the response contains "custom" message
+                if (Object.hasOwnProperty.call(response[i], "custom")) {
+
+                    custom_message = response[i].custom;
+                    for (key in custom_message) {
+                        const { payload } = custom_message[key];
+                        // console.log("type:"+payload)
+                        // text payload
+                        if (payload === "text") {
+                            if (custom_message[key].data != null) {
+                                // convert the text to markdown format using showdown.js(https://github.com/showdownjs/showdown);
+                                let botResponse;
+                                let html = converter.makeHtml(custom_message[key].data);
+                                
+                                html = html.replaceAll("<p>", "").replaceAll("</p>", "").replaceAll("<strong>", "<b>").replaceAll("</strong>", "</b>");
+                                html = html.replaceAll(/(?:\\r\n|\\r|\\n)/g, "<br>");
+                                
+                                // console.log("html: "+html);
+                                // check for blockquotes
+                                if (html.includes("<blockquote>")) {
+                                    html = html.replaceAll("<br>", "");
+                                    botResponse = getBotResponse(html);
+                                }
+                                // check for image
+                                if (html.includes("<img")) {
+                                    html = html.replaceAll("<img", '<img class="imgcard_mrkdwn" ');
+                                    botResponse = getBotResponse(html);
+                                }
+                                // check for preformatted text
+                                if (html.includes("<pre") || html.includes("<code>")) {
+
+                                    botResponse = getBotResponse(html);
+                                }
+                                // check for list text
+                                if (html.includes("<ul") || html.includes("<ol") || html.includes("<li") || html.includes('<h3')) {
+                                    html = html.replaceAll("<br>", "");
+                                    // botResponse = `<img class="botAvatar" src="./static/img/sara_avatar.png"/><span class="botMsg">${html}</span><div class="clearfix"></div>`;
+                                    botResponse = getBotResponse(html);
+                                }
+                                else {
+                                    // if no markdown formatting found, render the text as it is.
+                                    if (!botResponse) {
+                                        botResponse = `<img class="botAvatar" src="${botAvatar_img_src}"/><p class="botMsg">${html}</p><div class="clearfix"></div>`;
+                                    }
+                                }
+                                // append the bot response on to the chat screen
+                                $(botResponse).appendTo(".chats").hide().fadeIn(1000);
+                            }
+                        }
+                        // buttons payload
+                        if (payload === "buttons") {
+                            var obj = custom_message[key].data
+                            var result = Object.keys(obj).map((key) => [obj[key]]);
+                            // console.log("res:"+result)
+                            if (result.length > 0) {
+                                addSuggestion(result);
+                            }
+                        }
+
+                        if (payload === "image") {
+                            if (custom_message[key].data !== null) {
+                                const BotResponse = `<div class="singleCard"><img class="imgcard" src="${custom_message[key].data}"></div><div class="clearfix">`;
+                                $(BotResponse).appendTo(".chats").hide().fadeIn(1000);
+                            }
+                        }
+
+                        if (payload === "video") {
+                            // check if the attachment type is "video"
+                            if (custom_message[key].data !== null) {
+                                const video_url = custom_message[key].data;
+
+                                const BotResponse = `<div class="video-container"> <iframe src="${video_url}" frameborder="0" allowfullscreen></iframe> </div>`;
+                                $(BotResponse).appendTo(".chats").hide().fadeIn(1000);
+                            }
+                        }
+                       
+                        // check if the custom payload type is "cardsCarousel"
+                        if (payload === "cardsCarousel") {
+                            const restaurantsData = response[i].custom.data;
+                            showCardsCarousel(restaurantsData);
+                            // return;
+                        }
+
+                        // check of the custom payload type is "collapsible"
+                        if (payload === "collapsible") {
+                            const { data } = response[i].custom;
+                            // pass the data variable to createCollapsible function
+                            createCollapsible(data);
+                        }
+                        scrollToBottomOfResults();
+                    }
+                }
+                
             }
             scrollToBottomOfResults();
         }
         $(".usrInput").focus();
-    }, 500);
+    },1);
+    scrollToBottomOfResults();
 
 }
 
@@ -145,6 +257,10 @@ function send(message) {
                 // customActionTrigger();
                 return;
             }
+            
+            storeConversation(message,"user", sender_id)
+            storeConversation(botResponse,"bot", sender_id)
+        
             setBotResponse(botResponse);
         },
         error(xhr, textStatus) {
@@ -163,25 +279,63 @@ function send(message) {
 }
 
 /**
+ * sends an event to the custom action server,
+ *  so that bot can start the conversation by greeting the user
+ *
+ * Make sure you run action server using the command
+ * `rasa run actions --cors "*"`
+ *
+ * `Note: this method will only work in Rasa 2.x`
+ */
+// eslint-disable-next-line no-unused-vars
+// function customActionTrigger() {
+//     $.ajax({
+//         url: "http://localhost:5055/webhook/",
+//         type: "POST",
+//         contentType: "application/json",
+//         data: JSON.stringify({
+//             next_action: action_name,
+//             tracker: {
+//                 sender_id,
+//             },
+//         }),
+//         success(botResponse, status) {
+//             console.log("Response from Rasa: ", botResponse, "\nStatus: ", status);
+
+//             if (Object.hasOwnProperty.call(botResponse, "responses")) {
+//                 setBotResponse(botResponse.responses);
+//             }
+//             $("#userInput").prop("disabled", false);
+//         },
+//         error(xhr, textStatus) {
+//             // if there is no response from rasa server
+//             setBotResponse("");
+//             console.log("Error from bot end: ", textStatus);
+//             $("#userInput").prop("disabled", false);
+//         },
+//     });
+// }
+
+
+
+/**
  * clears the conversation from the chat screen
  * & sends the `/resart` event to the Rasa server
  */
 function restartConversation() {
     $("#userInput").prop("disabled", true);
     // destroy the existing chart
-    // $(".collapsible").remove();
+    $(".collapsible").remove();
 
-    // if (typeof chatChart !== "undefined") {
-    //     chatChart.destroy();
-    // }
-
-    // $(".chart-container").remove();
-    // if (typeof modalChart !== "undefined") {
-    //     modalChart.destroy();
-    // }
     $(".chats").html("");
     $(".usrInput").val("");
     send("/restart");
+    // remove and set new sender_id in localStorage
+    localStorage.removeItem('sender_id');
+    setChatClient()
+
+    $(".chats").html(welcome_text);
+    $(".chats").fadeIn();
 }
 // triggers restartConversation function.
 $("#restart").click(() => {
@@ -202,20 +356,9 @@ $(".usrInput").on("keyup keypress", (e) => {
         }
         // destroy the existing chart, if yu are not using charts, then comment the below lines
         // $(".collapsible").remove();
-        // $(".dropDownMsg").remove();
-        $("#initial_welcome_info").remove();
-        // if (typeof chatChart !== "undefined") {
-        //     chatChart.destroy();
-        // }
-
-        // $(".chart-container").remove();
-        // if (typeof modalChart !== "undefined") {
-        //     modalChart.destroy();
-        // }
-
-        // $("#paginated_cards").remove();
-        $(".suggestions").remove();
-        // $(".quickReplies").remove();
+        $("#initial_welcome_info").hide();
+        $("#paginated_cards").remove();
+        // $(".suggestions").remove();
         $(".usrInput").blur();
         setUserResponse(text);
         send(text);
@@ -231,22 +374,12 @@ $("#sendButton").on("click", (e) => {
         e.preventDefault();
         return false;
     }
-    // destroy the existing chart
-    // if (typeof chatChart !== "undefined") {
-    //     chatChart.destroy();
-    // }
 
-    // $(".chart-container").remove();
-    // if (typeof modalChart !== "undefined") {
-    //     modalChart.destroy();
-    // }
-
-    $(".suggestions").remove();
+    // $(".collapsible").remove();
+    // $(".suggestions").remove();
     $("#paginated_cards").remove();
-    $(".quickReplies").remove();
     $(".usrInput").blur();
-    $(".dropDownMsg").remove();
-    $("#initial_welcome_info").remove();
+    $("#initial_welcome_info").hide();
     setUserResponse(text);
     send(text);
     e.preventDefault();

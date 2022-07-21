@@ -21,11 +21,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* import components */
 include('./static/js/components/index.js');
-
+include('./static/js/constants.js');
 window.addEventListener('load', () => {
   // initialization
+  
   $(document).ready(() => {
+    $(".chats").html(welcome_text);
 
+    // store sender_id in localStorage
+   
+    var user_session = localStorage.getItem("user_session")
+    if(!user_session){ // no previous session existed
+      console.log("New session created.")
+      setChatClient();
+    }else{ //session already there
+      sender_id = JSON.parse(user_session).sender_id
+      loadPreviousChats()
+    }
+    
     // drop down menu for close, restart conversation & clear the chats.
     $(".dropdown-trigger").dropdown();
 
@@ -44,12 +57,14 @@ window.addEventListener('load', () => {
   $("#profile_div").click(() => {
     $(".show-prompt").removeClass("open");
     $(".widget").toggle();
+    scrollToBottomOfResults();
   });
 
   // clear function to clear the chat contents of the widget.
   $("#clear").click(() => {
+    // clearConversations();
     $(".chats").fadeOut("normal", () => {
-      $(".chats").html("");
+      $(".chats").html(welcome_text);
       $(".chats").fadeIn();
     });
   });
@@ -58,7 +73,7 @@ window.addEventListener('load', () => {
   $("#close").click(() => {
     // $(".profile_div").toggle();
     $(".widget").toggle();
-    scrollToBottomOfResults();
+    $(".chats").fadeIn();
   });
 
   // If nothing in chat show welcome message
