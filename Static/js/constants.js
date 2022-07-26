@@ -76,24 +76,37 @@ function loadPreviousChats() {
     var parsedStorage = JSON.parse(storage);
     var allConversations = parsedStorage.conversation;
     // console.log(allConversations)
-    $("#initial_welcome_info").hide();
-    if (allConversations.length == 0) {
-        $("#initial_welcome_info").show();
+
+    for (index in allConversations) {
+        var conversation = allConversations[index]
+        if (conversation.type != "userMessage") {
+            // console.log(conversation)
+            setBotResponse(conversation)
+        }
+        else {
+            // console.log(conversation.text)
+            setUserResponse(conversation.text)
+        }
+        scrollToBottomOfResults();
+    }
+
+}
+
+// Load Chats from loacl storage and render
+function loadWelcomeMessage() {
+    var storage = localStorage.getItem("user_session")
+    var parsedStorage = JSON.parse(storage);
+    var allConversations = parsedStorage.conversation;
+    // console.log(allConversations)
+    var conversation = allConversations[0]
+    if (conversation.type != "userMessage") {
+        // console.log(conversation)
+        setBotResponse(conversation)
     }
     else {
-        $("#initial_welcome_info").hide();
-
-        for (index in allConversations) {
-            var conversation = allConversations[index]
-            if (conversation.type != "userMessage") {
-                // console.log(conversation)
-                setBotResponse(conversation)
-            }
-            else {
-                // console.log(conversation.text)
-                setUserResponse(conversation.text)
-            }
-            scrollToBottomOfResults();
-        }
+        // console.log(conversation.text)
+        setUserResponse(conversation.text)
     }
+    scrollToBottomOfResults();
+
 }

@@ -19,7 +19,7 @@ function scrollToBottomOfResults() {
 function setUserResponse(message) {
     setTimeout(() => {
     const user_response = `<img class="userAvatar" src='${userAvatar_img_src}'><p class="userMsg">${message} </p><div class="clearfix"></div>`;
-    $(user_response).appendTo(".chats").show("slow");
+    $(user_response).appendTo(".chats").hide().fadeIn(100);
 
     $(".usrInput").val("");
     scrollToBottomOfResults();
@@ -36,7 +36,6 @@ function setUserResponse(message) {
  *
  */
 function getBotResponse(text) {
-    $("#initial_welcome_info").hide();
     botResponse = `<img class="botAvatar" src="${botAvatar_img_src}"/><span class="botMsg">${text}</span><div class="clearfix"></div>`;
     return botResponse;
 }
@@ -48,6 +47,7 @@ function getBotResponse(text) {
  * for more info: `https://rasa.com/docs/rasa/connectors/your-own-website#request-and-response-format`
  */
 function setBotResponse(response) {
+    
     // renders bot response after 500 milliseconds
     setTimeout(() => {
         hideBotTyping();
@@ -59,14 +59,23 @@ function setBotResponse(response) {
 
             const BotResponse = getBotResponse(fallbackMsg);
 
-            $(BotResponse).appendTo(".chats").hide().fadeIn(1000);
+            $(BotResponse).appendTo(".chats").hide().fadeIn(100);
             scrollToBottomOfResults();
         } else {
             // if we get response from Rasa
             // console.log("Responsess:: "+response[1].text)
+            // console.log(response)
+            if(typeof(response)=="string"){
+                // console.log("resppp:",response)
+                const BotResponse = getBotResponse(response);
+                $(BotResponse).appendTo(".chats").hide().fadeIn(100);
+                scrollToBottomOfResults();
+            }
             for (let i = 0; i < response.length; i += 1) {
                 // check if the response contains "text"
+                
                 if (Object.hasOwnProperty.call(response[i], "text")) {
+                    
                     if (response[i].text != null) {
                         // convert the text to markdown format using showdown.js(https://github.com/showdownjs/showdown);
                         let botResponse;
@@ -102,7 +111,7 @@ function setBotResponse(response) {
                             }
                         }
                         // append the bot response on to the chat screen
-                        $(botResponse).appendTo(".chats").hide().fadeIn(1000);
+                        $(botResponse).appendTo(".chats").hide().fadeIn(100);
                     }
                 }
 
@@ -110,7 +119,7 @@ function setBotResponse(response) {
                 if (Object.hasOwnProperty.call(response[i], "image")) {
                     if (response[i].image !== null) {
                         const BotResponse = `<div class="singleCard"><img class="imgcard" src="${response[i].image}"></div><div class="clearfix">`;
-                        $(BotResponse).appendTo(".chats").hide().fadeIn(1000);
+                        $(BotResponse).appendTo(".chats").hide().fadeIn(100);
                     }
                 }
 
@@ -130,7 +139,7 @@ function setBotResponse(response) {
                             const video_url = response[i].attachment.payload.src;
 
                             const BotResponse = `<div class="video-container"> <iframe src="${video_url}" frameborder="0" allowfullscreen></iframe> </div>`;
-                            $(BotResponse).appendTo(".chats").hide().fadeIn(1000);
+                            $(BotResponse).appendTo(".chats").hide().fadeIn(100);
                         }
                     }
                 }
@@ -139,10 +148,10 @@ function setBotResponse(response) {
 
                     custom_message = response[i].custom;
                     for (key in custom_message) {
-                        const { payload } = custom_message[key];
-                        // console.log("type:"+payload)
-                        // text payload
-                        if (payload === "text") {
+                        const payload_type = custom_message[key].type;
+                        // console.log("type:"+payload_type)
+                        // text payload_type
+                        if (payload_type === "text") {
                             if (custom_message[key].data != null) {
                                 // convert the text to markdown format using showdown.js(https://github.com/showdownjs/showdown);
                                 let botResponse;
@@ -180,11 +189,12 @@ function setBotResponse(response) {
                                     }
                                 }
                                 // append the bot response on to the chat screen
-                                $(botResponse).appendTo(".chats").hide().fadeIn(1000);
+                                // console.log("Done")
+                                $(botResponse).appendTo(".chats").hide().fadeIn(100);
                             }
                         }
-                        // buttons payload
-                        if (payload === "buttons") {
+                        // buttons payload type
+                        if (payload_type === "buttons") {
                             var obj = custom_message[key].data
                             var result = Object.keys(obj).map((key) => [obj[key]]);
                             // console.log("res:"+result)
@@ -193,32 +203,33 @@ function setBotResponse(response) {
                             }
                         }
 
-                        if (payload === "image") {
+                        // check if the custom payload type is "image"
+                        if (payload_type === "image") {
                             if (custom_message[key].data !== null) {
                                 const BotResponse = `<div class="singleCard"><img class="imgcard" src="${custom_message[key].data}"></div><div class="clearfix">`;
-                                $(BotResponse).appendTo(".chats").hide().fadeIn(1000);
+                                $(BotResponse).appendTo(".chats").hide().fadeIn(100);
                             }
                         }
-
-                        if (payload === "video") {
-                            // check if the attachment type is "video"
+                        
+                        // check if the custom payload type is "video"
+                        if (payload_type === "video") {
                             if (custom_message[key].data !== null) {
                                 const video_url = custom_message[key].data;
 
                                 const BotResponse = `<div class="video-container"> <iframe src="${video_url}" frameborder="0" allowfullscreen></iframe> </div>`;
-                                $(BotResponse).appendTo(".chats").hide().fadeIn(1000);
+                                $(BotResponse).appendTo(".chats").hide().fadeIn(100);
                             }
                         }
                        
                         // check if the custom payload type is "cardsCarousel"
-                        if (payload === "cardsCarousel") {
+                        if (payload_type === "cardsCarousel") {
                             const restaurantsData = response[i].custom.data;
                             showCardsCarousel(restaurantsData);
                             // return;
                         }
 
                         // check of the custom payload type is "collapsible"
-                        if (payload === "collapsible") {
+                        if (payload_type === "collapsible") {
                             const { data } = response[i].custom;
                             // pass the data variable to createCollapsible function
                             createCollapsible(data);
@@ -257,11 +268,13 @@ function send(message) {
                 // customActionTrigger();
                 return;
             }
-            
+            setBotResponse(botResponse);
+
+            // store conersations to local storage
             storeConversation(message,"user", sender_id)
             storeConversation(botResponse,"bot", sender_id)
         
-            setBotResponse(botResponse);
+            
         },
         error(xhr, textStatus) {
             if (message.toLowerCase() === "/restart") {
@@ -288,33 +301,10 @@ function send(message) {
  * `Note: this method will only work in Rasa 2.x`
  */
 // eslint-disable-next-line no-unused-vars
-// function customActionTrigger() {
-//     $.ajax({
-//         url: "http://localhost:5055/webhook/",
-//         type: "POST",
-//         contentType: "application/json",
-//         data: JSON.stringify({
-//             next_action: action_name,
-//             tracker: {
-//                 sender_id,
-//             },
-//         }),
-//         success(botResponse, status) {
-//             console.log("Response from Rasa: ", botResponse, "\nStatus: ", status);
-
-//             if (Object.hasOwnProperty.call(botResponse, "responses")) {
-//                 setBotResponse(botResponse.responses);
-//             }
-//             $("#userInput").prop("disabled", false);
-//         },
-//         error(xhr, textStatus) {
-//             // if there is no response from rasa server
-//             setBotResponse("");
-//             console.log("Error from bot end: ", textStatus);
-//             $("#userInput").prop("disabled", false);
-//         },
-//     });
-// }
+function customActionTrigger() {
+    showBotTyping();
+    send("/greet");
+}
 
 
 
@@ -334,7 +324,8 @@ function restartConversation() {
     localStorage.removeItem('sender_id');
     setChatClient()
 
-    $(".chats").html(welcome_text);
+    // $(".chats").html(welcome_text);
+    customActionTrigger();
     $(".chats").fadeIn();
 }
 // triggers restartConversation function.
@@ -356,7 +347,7 @@ $(".usrInput").on("keyup keypress", (e) => {
         }
         // destroy the existing chart, if yu are not using charts, then comment the below lines
         // $(".collapsible").remove();
-        $("#initial_welcome_info").hide();
+        // $("#initial_welcome_info").hide();
         $("#paginated_cards").remove();
         // $(".suggestions").remove();
         $(".usrInput").blur();
@@ -379,7 +370,7 @@ $("#sendButton").on("click", (e) => {
     // $(".suggestions").remove();
     $("#paginated_cards").remove();
     $(".usrInput").blur();
-    $("#initial_welcome_info").hide();
+    // $("#initial_welcome_info").hide();
     setUserResponse(text);
     send(text);
     e.preventDefault();

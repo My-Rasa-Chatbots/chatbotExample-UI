@@ -8,12 +8,17 @@ function addSuggestion(suggestions) {
     // Loop through suggestions
 
     for (let i = 0; i < suggLength; i += 1) {
-        suggestion = suggestions[i][0]
-        // console.log(suggestion)
-        if (!suggestion) {
+        var suggestion = suggestions[i][0]
+
+        var isUrl = suggestion.hasOwnProperty('url')
+        if (!suggestion) { //custom buttons
             suggestions_html += `<div class="menuChips" data-payload='${suggestions[i].payload}'>${suggestions[i].title}</div>`
         }
-        else {
+        else if(isUrl){
+            // console.log(suggestions[i][0])
+            suggestions_html += `<a class="menuChipsUrl" href='${suggestion.url}' target="_blank" rel="noopener noreferrer">${suggestion.title}</a>`
+        }
+        else { // regular buttons
             suggestions_html += `<div class="menuChips" data-payload='${suggestion.payload}'>${suggestion.title}</div>`
         }
     }
@@ -40,4 +45,18 @@ $(document).on("click", ".menu .menuChips", function () {
 
     // delete the suggestions once user click on it.
     // $(".suggestions").remove();
+});
+
+$(document).on("click", ".menu .menuChipsUrl", function (e) {
+    var text = this.innerText;
+    setUserResponse(text);
+    // console.log("here")
+    storeConversation(text, "user", sender_id)
+
+    var botMessage = text+" tab opened."
+    // botMessage = JSON.parse(`[{"custom":[{"type":"text", "data":"${botMessage}"}]}]`)
+    // console.log(botMessage)
+    setBotResponse(botMessage)
+    storeConversation(botMessage, "bot", sender_id)
+    // storeConversation(text, "user", sender_id)
 });

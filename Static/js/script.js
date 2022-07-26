@@ -26,14 +26,13 @@ window.addEventListener('load', () => {
   // initialization
   
   $(document).ready(() => {
-    $(".chats").html(welcome_text);
-
+    // $(".chats").html(welcome_text);
+    
     // store sender_id in localStorage
    
     var user_session = localStorage.getItem("user_session")
     if(!user_session){ // no previous session existed
-      console.log("New session created.")
-      setChatClient();
+      restartConversation();
     }else{ //session already there
       sender_id = JSON.parse(user_session).sender_id
       loadPreviousChats()
@@ -64,7 +63,8 @@ window.addEventListener('load', () => {
   $("#clear").click(() => {
     // clearConversations();
     $(".chats").fadeOut("normal", () => {
-      $(".chats").html(welcome_text);
+      $(".chats").html("");
+      loadWelcomeMessage();
       $(".chats").fadeIn();
     });
   });

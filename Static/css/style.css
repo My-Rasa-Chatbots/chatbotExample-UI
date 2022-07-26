@@ -94,7 +94,7 @@ div.chats::-webkit-scrollbar {
   margin-left: 0.5em;
   padding: 10px;
   border-radius: 1.5em;
-  max-width: 60%;
+  max-width: 70%;
   min-width: 25%;
   font-size: 13px;
   word-wrap: break-word;
@@ -305,7 +305,7 @@ blockquote {
   /* margin-top: -5px; */
 }
 
-.menuChips {
+.menuChips , .menuChipsUrl{
   display: block;
   /* background: #060dcfc7; */
   color: #060dcfc7;
@@ -318,7 +318,7 @@ blockquote {
   font-weight: 600;
   word-wrap: break-word;
 }
-.menuChips:hover{
+.menuChips:hover, .menuChipsUrl:hover{
   background: #060dcfc7;
   color: white;
 }
