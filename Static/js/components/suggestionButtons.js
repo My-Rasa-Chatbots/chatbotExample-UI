@@ -59,7 +59,7 @@ $(document).on("click", ".menu .menuChipsUrl", function (e) {
     // console.log("here")
     storeConversation(text, "user", sender_id)
 
-    var botMessage = "'"+text + "' tab opened."
+    var botMessage = text + " webpage is opened in another tab."
     setBotResponse(botMessage)
     storeConversation(botMessage, "bot", sender_id)
 
