@@ -82,7 +82,7 @@ function setBotResponse(response) {
                         let botResponse;
                         let html = converter.makeHtml(response[i].text);
                         html = html.replaceAll("<p>", "").replaceAll("</p>", "").replaceAll("<strong>", "<b>").replaceAll("</strong>", "</b>");
-                        html = html.replace(/(?:\r\n|\r|\n)/g, '<br>')
+                        html = html.replace(/(?:\\r\\n|\\r|\\n)/g, '<br>')
                         // console.log("html: "+html);
                         // check for blockquotes
                         if (html.includes("<blockquote>")) {
