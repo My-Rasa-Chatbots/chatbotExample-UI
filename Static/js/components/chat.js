@@ -51,6 +51,7 @@ function setBotResponse(response) {
     // renders bot response after 500 milliseconds
     setTimeout(() => {
         hideBotTyping();
+
         if (response.length < 1) {
             // if there is no response from Rasa, send  fallback message to the user
             const fallbackMsg = "I am facing some issues, please try again later!!!";
@@ -125,6 +126,7 @@ function setBotResponse(response) {
 
                 // check if the response contains "buttons"
                 if (Object.hasOwnProperty.call(response[i], "buttons")) {
+                    // console.log("bs:"+response[i].buttons)
                     if (response[i].buttons.length > 0) {
                         // console.log("tp:"+response[i].buttons)
                         addSuggestion(response[i].buttons);

@@ -9,17 +9,23 @@ function addSuggestion(suggestions) {
 
     for (let i = 0; i < suggLength; i += 1) {
         var suggestion = suggestions[i][0]
-
-        var isUrl = suggestion.hasOwnProperty('url')
-        if (!suggestion) { //custom buttons
+        console.log("sga:" + suggestions[i].payload)
+        if (suggestions[i].payload !== undefined) {
             suggestions_html += `<div class="menuChips" data-payload='${suggestions[i].payload}'>${suggestions[i].title}</div>`
         }
-        else if(isUrl){
-            // console.log(suggestions[i][0])
-            suggestions_html += `<a class="menuChipsUrl" href='${suggestion.url}' target="_blank" rel="noopener noreferrer">${suggestion.title}</a>`
-        }
-        else { // regular buttons
-            suggestions_html += `<div class="menuChips" data-payload='${suggestion.payload}'>${suggestion.title}</div>`
+        else {
+            var isUrl = suggestion.hasOwnProperty('url')
+
+            if (!suggestion) { //custom buttons
+                suggestions_html += `<div class="menuChips" data-payload='${suggestions[i].payload}'>${suggestions[i].title}</div>`
+            }
+            else if (isUrl) {
+                // console.log(suggestions[i][0])
+                suggestions_html += `<a class="menuChipsUrl" href='${suggestion.url}' target="_blank" rel="noopener noreferrer">${suggestion.title}</a>`
+            }
+            else { // regular buttons
+                suggestions_html += `<div class="menuChips" data-payload='${suggestion.payload}'>${suggestion.title}</div>`
+            }
         }
     }
     suggestions_html += '</div></div></div> <div class="clearfix"></div>'
@@ -53,7 +59,7 @@ $(document).on("click", ".menu .menuChipsUrl", function (e) {
     // console.log("here")
     storeConversation(text, "user", sender_id)
 
-    var botMessage = text+" tab opened."
+    var botMessage = text + " tab opened."
     // botMessage = JSON.parse(`[{"custom":[{"type":"text", "data":"${botMessage}"}]}]`)
     // console.log(botMessage)
     setBotResponse(botMessage)
