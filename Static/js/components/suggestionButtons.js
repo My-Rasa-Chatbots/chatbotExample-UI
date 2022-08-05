@@ -63,7 +63,7 @@ $(document).on("click", ".menu .menuChipsUrl", function (e) {
     setBotResponse(botMessage)
     storeConversation(botMessage, "bot", sender_id)
 
-    var msg_anything_else = "Can i help you with anything else?"
+    var msg_anything_else = "Can i help you with anything more?"
     setBotResponse(msg_anything_else)
     storeConversation(msg_anything_else, "bot", sender_id)
     // storeConversation(text, "user", sender_id)
