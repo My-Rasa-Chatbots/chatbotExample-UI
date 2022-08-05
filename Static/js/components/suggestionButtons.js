@@ -59,10 +59,12 @@ $(document).on("click", ".menu .menuChipsUrl", function (e) {
     // console.log("here")
     storeConversation(text, "user", sender_id)
 
-    var botMessage = text + " tab opened."
-    // botMessage = JSON.parse(`[{"custom":[{"type":"text", "data":"${botMessage}"}]}]`)
-    // console.log(botMessage)
+    var botMessage = "'"+text + "' tab opened."
     setBotResponse(botMessage)
     storeConversation(botMessage, "bot", sender_id)
+
+    var msg_anything_else = "Can i help you with anything else?"
+    setBotResponse(msg_anything_else)
+    storeConversation(msg_anything_else, "bot", sender_id)
     // storeConversation(text, "user", sender_id)
 });
