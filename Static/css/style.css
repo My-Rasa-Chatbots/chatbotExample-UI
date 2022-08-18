@@ -102,6 +102,12 @@ div.chats::-webkit-scrollbar {
   border-radius: 5px 20px 20px 20px;
 }
 
+/* For main menu header only */
+.menu_header{
+  background-color: rgba(109, 209, 109, 0.623);
+}
+/*  */
+
 div.chats > pre {
   font-family: monospace, monospace;
   font-size: 1em;
@@ -182,7 +188,9 @@ blockquote {
   padding-left: 15px;
   height: 40px;
 }
-
+textarea::placeholder{
+  color: #000000e3;
+}
 .keypad {
   /* display: none;  */
   background: white;
@@ -315,7 +323,7 @@ blockquote {
   cursor: pointer;
   font-size: 13px;
   border-radius: 1em;
-  border: 1px solid #060dcfc7;
+  border: 2px solid rgba(109, 209, 109, 0.76);
   font-weight: 600;
   word-wrap: break-word;
 }

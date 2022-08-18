@@ -167,6 +167,8 @@ function setBotResponse(response) {
                                 
                                 // console.log("html: "+html);
                                 // check for blockquotes
+                                const textClass = custom_message[key].class;
+
                                 if (html.includes("<blockquote>")) {
                                     html = html.replaceAll("<br>", "");
                                     botResponse = getBotResponse(html);
@@ -190,7 +192,7 @@ function setBotResponse(response) {
                                 else {
                                     // if no markdown formatting found, render the text as it is.
                                     if (!botResponse) {
-                                        botResponse = `<img class="botAvatar" src="${botAvatar_img_src}"/><p class="botMsg">${html}</p><div class="clearfix"></div>`;
+                                        botResponse = `<img class="botAvatar" src="${botAvatar_img_src}"/><p class="botMsg ${textClass}">${html}</p><div class="clearfix"></div>`;
                                     }
                                 }
                                 // append the bot response on to the chat screen
