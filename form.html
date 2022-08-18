@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>form</title>
+    <style>
+        .form{
+            margin: 30px;
+        }
+        input {
+            border: 1px black solid;
+            margin-bottom: 10px;
+            height: 25px;
+            padding: 2px 7px;
+            border-radius: 5px;
+        }
+        input.invalid {
+            border: 2px red solid;
+        }
+        input:focus.invalid {
+            outline: none !important;
+            border: 2px red solid;
+        }
+        input.valid{
+            border: 2px green solid;
+        }
+        input:focus.valid{
+            outline: none !important;
+            border: 2px green solid;
+        }
+        button {
+            border: none;
+            width: 40%;
+            border-radius: 10px;
+            color: white;
+            padding: 10px;
+            background: #0050dbc9;
+        }
+        button:hover{
+            background: #0050db;
+        }
+        label>span{
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form">
+        <form style="display: flex; flex-direction: column; width: 300px;">
+            <label for="name">Name<span>*</span></label>
+            <input type="text" class="valid" id="name" autofocus autocomplete="off">
+            <label for="phone">Phone<span>*</span></label>
+            <input type="phone" id="phone" autocomplete="off">
+            <label for="email">Email<span>*</span></label>
+            <input type="email" class="invalid" id="email" autocomplete="off">
+            <label for="query">Query<span>*</span></label>
+            <input type="text" id="query" autocomplete="off">
+            <button type="submit" id="formSubmitButton">Submit</button>
+        </form>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        function setSlot(formData) {
+            // add event="slot" to each objects
+            formData.map(function (e) {
+                e.event = "slot";
+            });
+
+            $.ajax({
+                url: "http://localhost:5005/conversations/09a4d6a2-e4d9-42d6-8a41-fcfe3552de34/tracker/events",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(formData),
+                success(botResponse, status) {
+                    console.log("Response from Rasa: ", botResponse, "\nStatus: ", status);
+                }
+            })
+            $.ajax({
+                url: "http://localhost:5005/conversations/09a4d6a2-e4d9-42d6-8a41-fcfe3552de34/execute",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ name: "submit_contact_form" }),
+                success(botResponse, status) {
+                    console.log("Response from Rasa: ", botResponse, "\nStatus: ", status);
+                }
+            })
+        }
+
+        $("#formSubmitButton").on("click", (e) => {
+            const name = $(".nameInput").val();
+            const phone = $(".phoneInput").val();
+            const email = $(".emailInput").val();
+            const query = $(".queryInput").val();
+
+            // if (name === "" || $.trim(name) === "" || phone === "" || $.trim(phone) === "") {
+            //     e.preventDefault();
+            //     return false;
+            // }
+            var formData = [
+                { name: "user_name", value: name },
+                { name: "user_phone", value: phone },
+                { name: "user_email", value: email },
+                { name: "user_query", value: query }
+            ]
+            setSlot(formData);
+
+            e.preventDefault();
+            return false;
+        });
+    </script>
+</body>
+
+</html>

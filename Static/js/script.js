@@ -20,8 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* import components */
-include('./static/js/components/index.js');
 include('./static/js/constants.js');
+include('./static/js/components/index.js');
+
 window.addEventListener('load', () => {
   // initialization
   
@@ -55,7 +56,7 @@ window.addEventListener('load', () => {
   // Toggle the chatbot screen
   $("#profile_div").click(() => {
     $(".show-prompt").removeClass("open");
-    $(".widget").toggle();
+    $(".widget").toggle(function(){$(this).animate({}, 100);});
     scrollToBottomOfResults();
   });
 
@@ -72,7 +73,7 @@ window.addEventListener('load', () => {
   // close function to close the widget.
   $("#close").click(() => {
     // $(".profile_div").toggle();
-    $(".widget").toggle();
+    $(".widget").toggle(function(){$(this).animate({}, 100);});
     $(".chats").fadeIn();
   });
 
@@ -81,9 +82,11 @@ window.addEventListener('load', () => {
 
 $(document).mouseup(function (e) {
   var container = $(".show-prompt");
+  var body = $("document.body")
   // if the target of the click isn't the container nor a descendant of the container
-  if (!container.is(e.target) && container.has(e.target).length === 0) {
-    $(".show-prompt").removeClass("open")
+  // if (!container.is(e.target) && container.has(e.target).length === 0) {
+  if(e.target.tagName == "BODY" && $('.widget').is(':visible')){
+    $(".widget").toggle(function(){$(this).animate({}, 100);});
   }
 });
 

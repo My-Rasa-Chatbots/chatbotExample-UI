@@ -9,7 +9,6 @@ function addSuggestion(suggestions) {
 
     for (let i = 0; i < suggLength; i += 1) {
         var suggestion = suggestions[i][0]
-        console.log("sga:" + suggestions[i].payload)
         if (suggestions[i].payload !== undefined) {
             suggestions_html += `<div class="menuChips" data-payload='${suggestions[i].payload}'>${suggestions[i].title}</div>`
         }
@@ -36,7 +35,6 @@ function addSuggestion(suggestions) {
         .hide()
         .fadeIn(100);
     scrollToBottomOfResults();
-
 }
 
 

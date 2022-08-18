@@ -47,7 +47,7 @@ body {
 }
 .chats {
   /* display: none; */
-  height: 385px;
+  height: 400px;
   padding: 2px;
   border-radius: 1px;
   overflow-y: scroll;
@@ -98,6 +98,7 @@ div.chats::-webkit-scrollbar {
   min-width: 25%;
   font-size: 13px;
   word-wrap: break-word;
+  margin-bottom: 5px;
   border-radius: 5px 20px 20px 20px;
 }
 
@@ -299,7 +300,7 @@ blockquote {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  max-width: 70%;
+  max-width: 80%;
   column-gap: 10px;
   row-gap: 5px;
   /* margin-top: -5px; */
@@ -310,7 +311,7 @@ blockquote {
   /* background: #060dcfc7; */
   color: #060dcfc7;
   text-align: center;
-  padding: 5px 13px;
+  padding: 3px 10px;
   cursor: pointer;
   font-size: 13px;
   border-radius: 1em;
@@ -512,3 +513,87 @@ div .open{
   transition: visibility 0.5s, opacity 0.3s linear;
 }
 
+/* Form styling */
+
+#inputForm > input {
+  all: unset;
+  /* width: 80%; */
+  border: 1px black solid;
+  margin-bottom: 10px;
+}
+.form{
+
+  float: left;
+  margin-top: 5px;
+  background: #e3e7ee;
+  color: black;
+  /* box-shadow: 2px 3px 9px 0px #9a82842e; */
+  margin-left: 0.5em;
+  padding: 15px;
+  border-radius: 1.5em;
+  width: 80%;
+  font-size: 13px;
+  border-radius: 5px 20px 20px 20px;
+}
+#inputForm{
+  display: flex;
+  flex-direction: column;
+}
+
+#inputForm > input {
+  border: 2px black solid;
+  margin-bottom: 10px;
+  height: 25px;
+  padding: 2px 7px;
+  border-radius: 5px;
+}
+#inputForm > input.invalid {
+  border: 2px red solid;
+}
+#inputForm > input:focus.invalid {
+  outline: none !important;
+  border: 2px red solid;
+}
+#inputForm > input.valid{
+  border: 2px green solid;
+}
+#inputForm > input:focus.valid{
+  outline: none !important;
+  border: 2px green solid;
+}
+
+
+#inputForm > div > #formSubmitButton {
+  border: none;
+  width: 40%;
+  border-radius: 10px;
+  color: white;
+  padding: 10px;
+  background: rgba(0, 80, 219, 0.7);
+}
+#inputForm > div > #formSubmitButton:hover{
+  background: rgba(0, 80, 219, 1);
+}
+
+#inputForm > div > #formCancelButton {
+  border: none;
+  width: 40%;
+  border-radius: 10px;
+  color: white;
+  padding: 10px;
+  float: right;
+  background: rgba(219, 69, 0, 0.7);
+}
+#inputForm > div > #formCancelButton:hover{
+  background: rgba(219, 69, 0, 1);
+  
+}
+.formTitle{
+  font-weight: 600;
+  font-size: 20px;
+}
+.message{
+  height: 20px;
+  display: block;
+  color: red;
+}

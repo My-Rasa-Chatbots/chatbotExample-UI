@@ -63,6 +63,7 @@ function setBotResponse(response) {
             $(BotResponse).appendTo(".chats").hide().fadeIn(100);
             scrollToBottomOfResults();
         } else {
+            // showForm()
             // if we get response from Rasa
             // console.log("Responsess:: "+response[1].text)
             // console.log(response)
@@ -151,13 +152,15 @@ function setBotResponse(response) {
                     custom_message = response[i].custom;
                     for (key in custom_message) {
                         const payload_type = custom_message[key].type;
+                        const payload_data = custom_message[key].data;
+                        
                         // console.log("type:"+payload_type)
                         // text payload_type
                         if (payload_type === "text") {
-                            if (custom_message[key].data != null) {
+                            if (payload_data != null) {
                                 // convert the text to markdown format using showdown.js(https://github.com/showdownjs/showdown);
                                 let botResponse;
-                                let html = converter.makeHtml(custom_message[key].data);
+                                let html = converter.makeHtml(payload_data);
                                 
                                 html = html.replaceAll("<p>", "").replaceAll("</p>", "").replaceAll("<strong>", "<b>").replaceAll("</strong>", "</b>");
                                 html = html.replaceAll(/(?:\\r\n|\\r|\\n)/g, "<br>");
@@ -197,7 +200,7 @@ function setBotResponse(response) {
                         }
                         // buttons payload type
                         if (payload_type === "buttons") {
-                            var obj = custom_message[key].data
+                            var obj = payload_data
                             var result = Object.keys(obj).map((key) => [obj[key]]);
                             // console.log("res:"+result)
                             if (result.length > 0) {
@@ -207,16 +210,16 @@ function setBotResponse(response) {
 
                         // check if the custom payload type is "image"
                         if (payload_type === "image") {
-                            if (custom_message[key].data !== null) {
-                                const BotResponse = `<div class="singleCard"><img class="imgcard" src="${custom_message[key].data}"></div><div class="clearfix">`;
+                            if (payload_data !== null) {
+                                const BotResponse = `<div class="singleCard"><img class="imgcard" src="${payload_data}"></div><div class="clearfix">`;
                                 $(BotResponse).appendTo(".chats").hide().fadeIn(100);
                             }
                         }
                         
                         // check if the custom payload type is "video"
                         if (payload_type === "video") {
-                            if (custom_message[key].data !== null) {
-                                const video_url = custom_message[key].data;
+                            if (payload_data !== null) {
+                                const video_url = payload_data;
 
                                 const BotResponse = `<div class="video-container"> <iframe src="${video_url}" frameborder="0" allowfullscreen></iframe> </div>`;
                                 $(BotResponse).appendTo(".chats").hide().fadeIn(100);
@@ -236,6 +239,12 @@ function setBotResponse(response) {
                             // pass the data variable to createCollapsible function
                             createCollapsible(data);
                         }
+
+                        // check of the custom payload type is "form"
+                        if (payload_type === "form") {
+                            const form_data = custom_message[1].data
+                            showForm(form_data);
+                        }
                         scrollToBottomOfResults();
                     }
                 }
@@ -246,8 +255,9 @@ function setBotResponse(response) {
         $(".usrInput").focus();
     },1);
     scrollToBottomOfResults();
-
+    // showForm()
 }
+
 
 /**
  * sends the user message to the rasa server,
@@ -255,7 +265,7 @@ function setBotResponse(response) {
  */
 function send(message) {
     $.ajax({
-        url: rasa_server_url,
+        url: rasa_server_API,
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({ message, sender: sender_id }),
@@ -274,6 +284,10 @@ function send(message) {
 
             // store conersations to local storage
             storeConversation(message,"user", sender_id)
+            // if Form response, store submitted data only
+            // code
+            
+            // else, store as normal 
             storeConversation(botResponse,"bot", sender_id)
         
             
@@ -378,3 +392,4 @@ $("#sendButton").on("click", (e) => {
     e.preventDefault();
     return false;
 });
+
