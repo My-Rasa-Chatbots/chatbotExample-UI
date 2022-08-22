@@ -148,7 +148,6 @@ function setBotResponse(response) {
                 }
                 // check if the response contains "custom" message
                 if (Object.hasOwnProperty.call(response[i], "custom")) {
-
                     custom_message = response[i].custom;
                     for (key in custom_message) {
                         const payload_type = custom_message[key].type;
@@ -235,6 +234,14 @@ function setBotResponse(response) {
                             // return;
                         }
 
+                        // check if the custom payload type is "AddressCardsCarousel"
+                        if (payload_type === "addressCardsCarousel") {
+                            // const addressData = response[i].custom.data;
+                            // console.log("KO")
+                            createAddressCollapsible(payload_data);
+                            // return;
+                        }
+
                         // check of the custom payload type is "collapsible"
                         if (payload_type === "collapsible") {
                             const { data } = response[i].custom;
@@ -250,7 +257,6 @@ function setBotResponse(response) {
                         scrollToBottomOfResults();
                     }
                 }
-                
             }
             scrollToBottomOfResults();
         }

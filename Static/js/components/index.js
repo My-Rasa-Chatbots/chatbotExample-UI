@@ -15,5 +15,5 @@ include('./static/js/components/botTyping.js');
 include('./static/js/components/suggestionButtons.js');
 include('./static/js/components/collapsible.js')
 include('./static/js/components/cardsCarousel.js')
-
+include('./static/js/components/AddressCollapsable.js')
 include('./Static/js/components/inputForm.js')

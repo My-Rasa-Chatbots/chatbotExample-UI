@@ -21,7 +21,7 @@ body {
 }
 
 .chat_header {
-  height: 60px;
+  height: 55px;
   background: #060dcfc7;
   border-radius: 10px 10px 0px 0px;
   padding: 5px;
@@ -31,7 +31,7 @@ body {
 .chat_header_title {
   color: white;
   float: left;
-  margin-top: 3%;
+  margin-top: 2%;
   margin-left: 0%;
   font-size: 25px;
   font-weight: 600;
@@ -43,7 +43,7 @@ body {
   float: left;
   border-radius: 50%;
   background: #fff;
-  margin: 5px 5px 5px 15px;
+  margin: 3px 5px 5px 15px;
 }
 .chats {
   /* display: none; */
@@ -308,7 +308,7 @@ textarea::placeholder{
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  max-width: 80%;
+  max-width: 90%;
   column-gap: 10px;
   row-gap: 5px;
   /* margin-top: -5px; */
@@ -319,11 +319,11 @@ textarea::placeholder{
   /* background: #060dcfc7; */
   color: #060dcfc7;
   text-align: center;
-  padding: 3px 10px;
+  padding: 3px 8px;
   cursor: pointer;
   font-size: 13px;
   border-radius: 1em;
-  border: 2px solid rgba(109, 209, 109, 0.76);
+  border: 1px solid rgba(109, 209, 109, 0.76);
   font-weight: 600;
   word-wrap: break-word;
 }
@@ -335,18 +335,27 @@ textarea::placeholder{
 /* css for collapsible */
 
 .collapsible {
-  margin-top: 5px;
-  margin-left: 5%;
-  max-width: 60%;
+  margin-top: 10px;
+  margin-left: 10%;
+  padding-right: 5%;
+  max-width: 70%;
   min-width: 25%;
   font-size: 13px;
   word-wrap: break-word;
   border-radius: 20px;
   background: white;
+  border-radius: 0px 20px 20px 20px;
+  -webkit-box-shadow: none;
+  border-bottom: 1px solid #ddd;
 }
-
-.collapsible-body {
-  padding: 15px;
+ul.collapsible:not(.browser-default) > li {
+  list-style-type: none !important;
+}
+.collapsible-body{
+  padding: 5px 5px 10px 5px;
+}
+.collapsible-body > span{
+  padding: 0px 0px 0px 0px;
 }
 
 .collapsible-header {
@@ -355,12 +364,12 @@ textarea::placeholder{
 }
 
 ul.collapsible > li:first-child .collapsible-header {
-  border-radius: 20px 20px 0px 0px;
+  /* border-radius: 20px 20px 0px 0px; */
 }
 
 ul.collapsible > li:last-child .collapsible-header {
   color: #060dcfc7;
-  border-radius: 0px 0px 20px 20px;
+  /* border-radius: 0px 0px 20px 20px; */
 }
 
 ul.collapsible > li:last-child .collapsible-body {

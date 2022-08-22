@@ -22,7 +22,7 @@ function setSlot(slotValues,formTitle){
                 data: JSON.stringify({ name: "submit_contact_form" }),
                 success(botResponse, status) {
                     console.log("Response from Rasa: ", botResponse.messages, "\nStatus: ", status);
-                    closeForm(formTitle,"Form submitted successfully")
+                    closeForm(formTitle,"Form submitted successfully.")
                     setBotResponse(botResponse.messages);
                     storeConversation(botResponse.messages,"bot", sender_id)
                 },
@@ -150,7 +150,7 @@ function validateQuery(query_value){
 function showForm(formData) {
     
     var formTitle = formData[0].form_title;
-    closeForm(formTitle,"Form closed.")
+    closeForm(formTitle,"Form is closed.")
     var formSubtitle = formData[1].form_subtitle;
     var formFields = formData[2].fields;
 
