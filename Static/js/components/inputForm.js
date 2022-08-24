@@ -2,9 +2,9 @@
  * creates vertically placed form fields
  * @param {Array} slotValues
  * */
-function setSlot(slotValues,formTitle){
-     // add event:"slot" to each objects
-     slotValues.map(function (e) {
+function setSlot(slotValues, formTitle) {
+    // add event:"slot" to each objects
+    slotValues.map(function (e) {
         e.event = "slot";
     });
     $("#inputForm :input").prop("disabled", true);
@@ -22,9 +22,9 @@ function setSlot(slotValues,formTitle){
                 data: JSON.stringify({ name: "submit_contact_form" }),
                 success(botResponse, status) {
                     console.log("Response from Rasa: ", botResponse.messages, "\nStatus: ", status);
-                    closeForm(formTitle,"Form submitted successfully.")
+                    closeForm(formTitle,"submit", "Contact Us Form submitted successfully.")
                     setBotResponse(botResponse.messages);
-                    storeConversation(botResponse.messages,"bot", sender_id)
+                    storeConversation(botResponse.messages, "bot", sender_id)
                 },
                 error(xhr, textStatus) {
                     if (message.toLowerCase() === "/restart") {
@@ -33,13 +33,13 @@ function setSlot(slotValues,formTitle){
                         // actionTrigger();
                         // return;
                     }
-        
+
                     // if there is no response from rasa server, set error bot response
                     setBotResponse("");
                     console.log("Error from bot end: ", textStatus);
                 },
             })
-            
+
         },
         error(xhr, textStatus) {
             if (message.toLowerCase() === "/restart") {
@@ -60,27 +60,34 @@ function setSlot(slotValues,formTitle){
  * creates vertically placed form fields
  * @param {Array} actionName
  * */
-function executeAction(actionName)
-{
+function executeAction(actionName) {
 
 }
 
-function closeForm(form_title, message){
+function closeForm(form_title, type, message) {
     var storage = localStorage.getItem("user_session")
     var parsedStorage = JSON.parse(storage);
     var allConversations = parsedStorage.conversation;
-    for(conv in allConversations){
-        if(typeof(allConversations[conv][0]) == "object" && allConversations[conv][0].custom != undefined){
-            if(allConversations[conv][0].custom[0].type == "form" && allConversations[conv][0].custom[1].data[0].form_title == form_title){
-                // console.log((allConversations))
-                allConversations[conv] = message
-                // console.log(("hi"))
-                hideBotTyping();
-                $( "div.form" ).replaceWith(`<span class="botMsg">${message}</span>`).hide().fadeIn(100);
-                scrollToBottomOfResults();
-                return true;
+    var openFormCount = 0;
+    var prevForm;
+    for (conv in allConversations) {
+        if (typeof (allConversations[conv][0]) == "object" && allConversations[conv][0].custom != undefined) {
+            if (allConversations[conv][0].custom[0].type == "form" && allConversations[conv][0].custom[1].data[0].form_title == form_title) {
+                openFormCount += 1;
+                
+                if (openFormCount > 1 || type=="submit") {
+                    // console.log((allConversations))
+                    if(type=="submit") prevForm = conv
+                    allConversations[prevForm] = message;
+                    hideBotTyping();
+                    // console.log($(".form"))
+                    $(".form").replaceWith(`<span class="botMsg">${message}</span>`).hide().fadeIn(100);
+                    scrollToBottomOfResults();
+                }
+                prevForm = conv;
             }
         }
+
     }
     var message = {
         "sender_id": sender_id,
@@ -88,6 +95,7 @@ function closeForm(form_title, message){
     }
     localStorage.setItem("user_session", JSON.stringify(message));
     scrollToBottomOfResults();
+    return true;
 }
 /**
  * creates vertically placed form fields
@@ -101,20 +109,20 @@ function createFormFields(formFieldsData) {
     });
     const submitButton = `<button type="submit" id="formSubmitButton">Submit</button>`;
     const cancelButton = `<button id="formCancelButton">Cancel</button>`;
-    const formContents = `<img class="botAvatar" src="${botAvatar_img_src}"/><div class="form"><span class="formTitle"></span><p class="formSubtitle"></p><span class="message"></span><form id="inputForm">` + inputFields + `<div>` +submitButton +`</div>` +'</form></div><div class="clearfix"></div>'
+    const formContents = `<img class="botAvatar" src="${botAvatar_img_src}"/><div class="form"><span class="formTitle"></span><p class="formSubtitle"></p><span class="message"></span><form id="inputForm">` + inputFields + `<div>` + submitButton + `</div>` + '</form></div><div class="clearfix"></div>'
     return formContents;
 }
 // get values
-function getName(){
+function getName() {
     return $("#user_name").val();
 }
-function getPhone(){ 
+function getPhone() {
     return $("#user_phone").val();
 }
-function getEmail(){
+function getEmail() {
     return $("#user_email").val();
 }
-function getQuery(){
+function getQuery() {
     return $("#user_query").val();
 }
 // validation
@@ -136,7 +144,7 @@ function validateEmail(email_value) {
     }
     return false
 }
-function validateQuery(query_value){
+function validateQuery(query_value) {
     if (query_value != '') {
         return /^[\d\w ]+$/.test(query_value)
     }
@@ -148,9 +156,9 @@ function validateQuery(query_value){
  */
 //  function showForm(formFieldsToAdd) {
 function showForm(formData) {
-    
+
     var formTitle = formData[0].form_title;
-    closeForm(formTitle,"Form is closed.")
+    closeForm(formTitle,"close", "Form is closed.")
     var formSubtitle = formData[1].form_subtitle;
     var formFields = formData[2].fields;
 
@@ -158,57 +166,57 @@ function showForm(formData) {
     $(form).appendTo(".chats").show();
     $("#inputForm input").first().focus();
 
-    if(formTitle!="nan"){
+    if (formTitle != "nan") {
         $(".formTitle").text(formTitle);
     }
-    if(formSubtitle!="nan"){
+    if (formSubtitle != "nan") {
         $(".formSubtitle").text(formSubtitle);
     }
-    if(formFields=="nan"){
-        formFields=undefined;
+    if (formFields == "nan") {
+        formFields = undefined;
     }
 
 
-    $("#user_name").keyup( (e) => {
+    $("#user_name").keyup((e) => {
         var name = getName();
-        if(validateName(name)){
+        if (validateName(name)) {
             $("#user_name").removeClass("invalid")
             $("#user_name").addClass("valid")
         }
-        else{
+        else {
             $("#user_name").removeClass("valid")
             $("#user_name").addClass("invalid")
         }
     })
-    $("#user_phone").keyup( (e) => {
+    $("#user_phone").keyup((e) => {
         var phone = getPhone();
-        if(validatePhone(phone)){
+        if (validatePhone(phone)) {
             $("#user_phone").removeClass("invalid")
             $("#user_phone").addClass("valid")
         }
-        else{
+        else {
             $("#user_phone").removeClass("valid")
             $("#user_phone").addClass("invalid")
         }
     })
-    $("#user_email").keyup( (e) => {
+    $("#user_email").keyup((e) => {
         var email = getEmail();
-        if(validateEmail(email)){
+        if (validateEmail(email)) {
             $("#user_email").removeClass("invalid")
             $("#user_email").addClass("valid")
         }
-        else{
+        else {
             $("#user_email").removeClass("valid")
             $("#user_email").addClass("invalid")
         }
     })
-    $("#user_query").keyup( (e) => {
+    $("#user_query").keyup((e) => {
         var query = getQuery();
-        if(validateQuery(query)){
+        if (validateQuery(query)) {
             $("#user_query").removeClass("invalid")
             $("#user_query").addClass("valid")
         }
-        else{
+        else {
             $("#user_query").removeClass("valid")
             $("#user_query").addClass("invalid")
         }
@@ -228,10 +236,10 @@ function showForm(formData) {
                 { name: "user_email", value: email },
                 { name: "user_query", value: query }
             ]
-            
+
             // send to API function
             showBotTyping()
-            setSlot(formData,formTitle)
+            setSlot(formData, formTitle)
             e.preventDefault();
             console.log(formData)
             return false;

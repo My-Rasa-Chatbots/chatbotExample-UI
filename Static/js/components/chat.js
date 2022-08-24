@@ -47,14 +47,13 @@ function getBotResponse(text) {
  * for more info: `https://rasa.com/docs/rasa/connectors/your-own-website#request-and-response-format`
  */
 function setBotResponse(response) {
-    
     // renders bot response after 500 milliseconds
     setTimeout(() => {
         hideBotTyping();
 
         if (response.length < 1) {
             // if there is no response from Rasa, send  fallback message to the user
-            const fallbackMsg = "I am facing some issues, please try again later!!!";
+            const fallbackMsg = "Something went wrong, please try again later.";
 
             // const BotResponse = `<img class="botAvatar" src="./static/img/sara_avatar.png"/><p class="botMsg">${fallbackMsg}</p><div class="clearfix"></div>`;
 

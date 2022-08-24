@@ -313,6 +313,8 @@ textarea::placeholder{
   row-gap: 5px;
   /* margin-top: -5px; */
 }
+.menu :nth-child(3) { order: 1; }
+.menu :nth-child(2) { order: 2; }
 
 .menuChips , .menuChipsUrl{
   display: block;
