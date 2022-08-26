@@ -189,7 +189,8 @@ blockquote {
   height: 40px;
 }
 textarea::placeholder{
-  color: #000000e3;
+  color: #131313de;
+  font-style: italic;
 }
 .keypad {
   /* display: none;  */
@@ -237,23 +238,22 @@ textarea::placeholder{
 
 /* css for dropdown menu of the bot */
 
-#close,
-#restart,
-#clear {
-  cursor: pointer;
+#close:hover,
+#restart:hover{
+  color: white;
 }
 
-.dropdown-trigger {
+.header_icons {
   cursor: pointer;
-  color: white;
+  color: rgba(255, 255, 255, 0.884);
   margin-right: 5px;
   float: right;
   margin-top: 3%;
 }
 
-.dropdown-content li > a,
-.dropdown-content li > span {
-  color: #060dcfc7;
+.header_icons > span {
+  padding: 0px 5px;
+  cursor: pointer;
 }
 
 @keyframes animateElement {
