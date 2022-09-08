@@ -1,3 +1,10 @@
+:root{
+  --menu_btn_bg : rgba(109, 209, 109, 0.76);
+  --menu_btn_border : rgba(109, 209, 109, 0.76);
+  --user_msg_bg:#060dcfc7;
+  --bot_msg_bg:#e3e7ee;
+
+}
 body {
   font-family: "Open Sans", sans-serif;
   background: url("../img/bg.png") no-repeat center center fixed;
@@ -47,7 +54,7 @@ body {
 }
 .chats {
   /* display: none; */
-  height: 400px;
+  height: 390px;
   padding: 2px;
   border-radius: 1px;
   overflow-y: scroll;
@@ -88,7 +95,7 @@ div.chats::-webkit-scrollbar {
 .botMsg {
   float: left;
   margin-top: 5px;
-  background: #e3e7ee;
+  background: var(--bot_msg_bg);
   color: black;
   /* box-shadow: 2px 3px 9px 0px #9a82842e; */
   margin-left: 0.5em;
@@ -150,7 +157,7 @@ textarea-webkit-scrollbar {
   padding: 10px;
   float: right;
   margin-right: 0.5em;
-  background: #060dcfc7;
+  background: var(--user_msg_bg);
   color: white;
   margin-bottom: 0.15em;
   font-size: 13px;
@@ -169,7 +176,41 @@ blockquote {
   margin-inline-start: 0 !important;
   margin-inline-end: 0 !important;
 }
+/* Typing suggestion section */
+.typing_suggestion_section{
+  padding: 0px 8px;
+  margin-top: 5px;
+  height: 25px;
+  width: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 3px;
+  overflow-x: auto;
+  /* border-radius: 8px; */
+}
+.typing_suggestion_section::-webkit-scrollbar{
+  width: 0;
+  height: 0;
+}
 
+.typing_suggestion_section > div{
+  height: 25px;
+  padding: 3px;
+  border: 1px solid gray;
+  display: block;
+  border-radius: 8px;
+  font-size:12px;
+  white-space: nowrap;
+  cursor: pointer;
+  color: blueviolet;
+}
+
+.typing_suggestion_section > div:hover{
+  background: rgba(137, 43, 226, 0.74);
+  color: white;
+}
+/* Typing section */
 .userAvatar {
   animation: animateElement linear 0.3s;
   animation-iteration-count: 1;
@@ -311,6 +352,7 @@ textarea::placeholder{
   max-width: 90%;
   column-gap: 10px;
   row-gap: 5px;
+  /* border: 1px solid #ddd; */
   /* margin-top: -5px; */
 }
 .menu :nth-child(3) { order: 1; }
@@ -318,20 +360,20 @@ textarea::placeholder{
 
 .menuChips , .menuChipsUrl{
   display: block;
-  /* background: #060dcfc7; */
+  /* background: var(--bot_msg_bg); */
   color: #060dcfc7;
   text-align: center;
   padding: 3px 8px;
   cursor: pointer;
   font-size: 13px;
   border-radius: 1em;
-  border: 1px solid rgba(109, 209, 109, 0.76);
+  border: 1px solid var(--menu_btn_border);
   font-weight: 600;
   word-wrap: break-word;
 }
 .menuChips:hover, .menuChipsUrl:hover{
-  background: #060dcfc7;
-  color: white;
+  background: var(--menu_btn_bg);
+  /* color: white; */
 }
 
 /* css for collapsible */

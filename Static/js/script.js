@@ -90,3 +90,20 @@ $(document).mouseup(function (e) {
   }
 });
 
+
+
+// Suggestion based on user input
+$(".usrInput").on("keyup", ()=>{
+  const user_text = $(".usrInput").val();
+  var regex = new RegExp()
+  var filtered_topics = suggestion_topics.filter((topic)=>{
+    return topic.toLowerCase().includes(user_text.toLowerCase())
+  })
+  addTypingSuggestion(filtered_topics)
+  // console.log(filtered_topics)
+})
+
+$(document).on("click", ".suggestionChips", function (e) {
+  var text = this.innerText;
+  $(".usrInput").text(text)
+})

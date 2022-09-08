@@ -152,7 +152,7 @@ function setBotResponse(response) {
                         const payload_type = custom_message[key].type;
                         const payload_data = custom_message[key].data;
                         
-                        // console.log("type:"+payload_type)
+                        // console.log("type:"+custom_message[key])
                         // text payload_type
                         if (payload_type === "text") {
                             if (payload_data != null) {
@@ -253,6 +253,13 @@ function setBotResponse(response) {
                             const form_data = custom_message[1].data
                             showForm(form_data);
                         }
+
+                        // check of the custom payload type is "inputSuggestions"
+                        if (payload_type === "inputSuggestions") {
+                            const form_data = custom_message[key].data
+                            storeTopics(form_data);
+                        }
+                        
                         scrollToBottomOfResults();
                     }
                 }
@@ -275,6 +282,7 @@ function send(message) {
         url: rasa_server_API,
         type: "POST",
         contentType: "application/json",
+        // headers:
         data: JSON.stringify({ message, sender: sender_id }),
         success(botResponse, status) {
             console.log("Response from Rasa: ", botResponse, "\nStatus: ", status);
