@@ -25,20 +25,20 @@ include('./static/js/components/index.js');
 
 window.addEventListener('load', () => {
   // initialization
-  
+
   $(document).ready(() => {
     // $(".chats").html(welcome_text);
-    
+
     // store sender_id in localStorage
-   
+
     var user_session = localStorage.getItem("user_session")
-    if(!user_session){ // no previous session existed
+    if (!user_session) { // no previous session existed
       restartConversation();
-    }else{ //session already there
+    } else { //session already there
       sender_id = JSON.parse(user_session).sender_id
       loadPreviousChats()
     }
-    
+
     // drop down menu for close, restart conversation & clear the chats.
     $(".dropdown-trigger").dropdown();
 
@@ -56,7 +56,7 @@ window.addEventListener('load', () => {
   // Toggle the chatbot screen
   $("#profile_div").click(() => {
     $(".show-prompt").removeClass("open");
-    $(".widget").toggle(function(){$(this).animate({}, 100);});
+    $(".widget").toggle(function () { $(this).animate({}, 100); });
     scrollToBottomOfResults();
   });
 
@@ -73,7 +73,7 @@ window.addEventListener('load', () => {
   // close function to close the widget.
   $("#close").click(() => {
     // $(".profile_div").toggle();
-    $(".widget").toggle(function(){$(this).animate({}, 100);});
+    $(".widget").toggle(function () { $(this).animate({}, 100); });
     $(".chats").fadeIn();
   });
 
@@ -85,22 +85,25 @@ $(document).mouseup(function (e) {
   var body = $("document.body")
   // if the target of the click isn't the container nor a descendant of the container
   // if (!container.is(e.target) && container.has(e.target).length === 0) {
-  if(e.target.tagName == "BODY" && $('.widget').is(':visible')){
-    $(".widget").toggle(function(){$(this).animate({}, 100);});
+  if (e.target.tagName == "BODY" && $('.widget').is(':visible')) {
+    $(".widget").toggle(function () { $(this).animate({}, 100); });
   }
 });
 
 
 
 // Suggestion based on user input
-$(".usrInput").on("keyup", ()=>{
+$(".usrInput").on("keyup", () => {
   const user_text = $(".usrInput").val();
-  var regex = new RegExp()
-  var filtered_topics = suggestion_topics.filter((topic)=>{
-    return topic.toLowerCase().includes(user_text.toLowerCase())
-  })
+  filtered_topics = {}
+  if (user_text != "") {
+    filtered_topics = suggestion_topics.filter((topic) => {
+      return topic.toLowerCase().includes(user_text.toLowerCase())
+    })
+  }
+
   addTypingSuggestion(filtered_topics)
-  // console.log(filtered_topics)
+  // console.log(typeof (filtered_topics))
 })
 
 $(document).on("click", ".suggestionChips", function (e) {

@@ -380,7 +380,7 @@ $(".usrInput").on("keyup keypress", (e) => {
         // $(".collapsible").remove();
         // $("#initial_welcome_info").hide();
         $("#paginated_cards").remove();
-        // $(".suggestions").remove();
+        $(".typing_suggestion_section").html("");
         $(".usrInput").blur();
         setUserResponse(text);
         send(text);
@@ -398,10 +398,9 @@ $("#sendButton").on("click", (e) => {
     }
 
     // $(".collapsible").remove();
-    // $(".suggestions").remove();
     $("#paginated_cards").remove();
     $(".usrInput").blur();
-    // $("#initial_welcome_info").hide();
+    $(".typing_suggestion_section").html("");
     setUserResponse(text);
     send(text);
     e.preventDefault();

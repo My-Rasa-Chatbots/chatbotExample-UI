@@ -14,6 +14,6 @@ function addTypingSuggestion(typingSuggestions) {
 
 $(document).on("click", ".suggestionChips", function (e) {
     var text = this.innerText;
-    console.log(text)
+    // console.log(text)
     $(".usrInput").val(text)
 })
