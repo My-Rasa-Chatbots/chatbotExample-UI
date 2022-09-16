@@ -285,12 +285,13 @@ function send(message) {
         // headers:
         data: JSON.stringify({ message, sender: sender_id }),
         success(botResponse, status) {
+            console.log("User message: ",message)
             console.log("Response from Rasa: ", botResponse, "\nStatus: ", status);
 
             // if user wants to restart the chat and clear the existing chat contents
             if (message.toLowerCase() === "/restart") {
                 $("#userInput").prop("disabled", false);
-
+                customActionTrigger();
                 // if you want the bot to start the conversation after restart
                 // customActionTrigger();
                 return;
@@ -314,10 +315,9 @@ function send(message) {
                 // actionTrigger();
                 // return;
             }
-
             // if there is no response from rasa server, set error bot response
             setBotResponse("");
-            console.log("Error from bot end: ", textStatus);
+            console.log("Error from bot end: ", textStatus,"\nMessage: ",message);
         },
     });
 }
@@ -356,7 +356,7 @@ function restartConversation() {
     setChatClient()
 
     // $(".chats").html(welcome_text);
-    customActionTrigger();
+    
     $(".chats").fadeIn();
 }
 // triggers restartConversation function.

@@ -78,6 +78,9 @@ window.addEventListener('load', () => {
   });
 
   // If nothing in chat show welcome message
+  // chat widget empty
+  var count = $(".chats").children().length;
+  console.log("tags"+count);
 });
 
 $(document).mouseup(function (e) {
@@ -106,7 +109,11 @@ $(".usrInput").on("keyup", () => {
   // console.log(typeof (filtered_topics))
 })
 
+// Suggestion click event
 $(document).on("click", ".suggestionChips", function (e) {
   var text = this.innerText;
   $(".usrInput").text(text)
 })
+
+
+

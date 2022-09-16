@@ -452,7 +452,9 @@ div .open{
   background: var(--menu_btn_bg);
   /* color: white; */
 }
-
+.disabled{
+  pointer-events: none;
+}
 /* css for collapsible */
 
 .collapsible {

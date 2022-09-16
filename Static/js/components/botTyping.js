@@ -6,6 +6,9 @@ function hideBotTyping() {
     $("#botAvatar").remove();
     $(".botTyping").remove();
     $("#userInput").prop("disabled", false);
+    $(".menuChips").removeClass("disabled");
+    $(".menuChipsUrl").removeClass("disabled");
+    scrollToBottomOfResults();
 }
 
 /**
@@ -16,5 +19,7 @@ function showBotTyping() {
     $(botTyping).appendTo(".chats");
     $(".botTyping").show();
     $("#userInput").prop("disabled", true);
+    $(".menuChips").addClass("disabled");
+    $(".menuChipsUrl").addClass("disabled");
     scrollToBottomOfResults();
 }
