@@ -112,7 +112,8 @@ $(".usrInput").on("keyup", () => {
 // Suggestion click event
 $(document).on("click", ".suggestionChips", function (e) {
   var text = this.innerText;
-  $(".usrInput").text(text)
+  $(".usrInput").text(text);
+  $(".usrInput").show().focus();
 })
 
 
