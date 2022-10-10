@@ -27,7 +27,7 @@ function createAddressCollapsible(collapsible_data) {
             })
         }
         else {
-            office_address = office_address.replace('contact@marlabs.com',`<a title="Write email" href="https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=contact@marlabs.com" target="_blank">contact@marlabs.com</a>`)
+            office_address = office_address.replace('contact@marlabs.com',`<a title="Write email" href="mailto:contact@marlabs.com">contact@marlabs.com</a>`)
             const collapsible_item = `<li><div class="collapsible-header">${office_location}</div><div class="collapsible-body">
                                     <span>${office_address}</span></div></li>`;
 
